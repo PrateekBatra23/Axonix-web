@@ -14,18 +14,9 @@ export default function Header() {
   return (
     <header className="border-b border-border sticky top-0 bg-background z-50">
       <nav className="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={toggleTheme}
-            className="border border-border rounded-md p-1.5 flex items-center justify-center"
-            aria-label="Toggle theme"
-          >
-            {dark ? "N" : "D"}
-          </button>
-          <Link href="/" className="font-bold text-lg tracking-tight">
-            AXONIX
-          </Link>
-        </div>
+        <Link href="/" className="font-bold text-lg tracking-tight">
+          AXONIX
+        </Link>
 
         <div className="flex items-center gap-7 text-sm font-mono text-muted">
           <Link href="/digests" className="hover:text-foreground transition">
@@ -40,7 +31,7 @@ export default function Header() {
               SOON
             </span>
           </Link>
-          <a
+          <a 
             href="https://prateekbatra.dev"
             target="_blank"
             rel="noopener noreferrer"
@@ -48,6 +39,13 @@ export default function Header() {
           >
             Built by Prateek Batra
           </a>
+          <button
+            onClick={toggleTheme}
+            className="border border-border rounded-md p-1.5 flex items-center justify-center text-foreground"
+            aria-label="Toggle theme"
+          >
+            {dark ? "🌙" : "☀️"}
+          </button>
         </div>
       </nav>
     </header>

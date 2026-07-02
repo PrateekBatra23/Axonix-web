@@ -1,3 +1,4 @@
+import StorySection from "@/components/StorySection";
 async function getDigests() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
     cache: "no-store",
@@ -79,40 +80,7 @@ export default async function HomePage() {
         </>
       )}
 
-      {rest.length > 0 && (
-        <>
-          <h2 className="text-sm font-semibold mb-4">Also today</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-            {rest.map((story) => (
-              <article
-                key={story.id}
-                className="bg-card-bg border border-border rounded-lg px-5 py-5"
-              >
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {story.topic_tags.split(",").map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted"
-                    >
-                      {tag.trim()}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="text-sm font-semibold mb-2 leading-snug">
-                  {story.headline}
-                </h3>
-                <p className="text-xs text-muted leading-relaxed mb-3">
-                  {story.summary}
-                </p>
-                <p className="text-[11px] font-mono text-faint">
-                  {story.source}
-                </p>
-              </article>
-            ))}
-          </div>
-        </>
-      )}
-
+      <StorySection stories={rest} />
       <div className="flex justify-center mb-10">
         <a
           href="/digests"
