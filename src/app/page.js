@@ -31,7 +31,14 @@ export default async function HomePage() {
   const rest = todayStories.slice(1);
 
   return (
+    
     <main className="max-w-6xl mx-auto px-8 py-12">
+      <div className="bg-digest-bg border border-accent/30 rounded-lg px-5 py-3 mb-8 text-center">
+        <p className="text-xs font-mono text-muted">
+          🚧 Site under construction — some data shown may be placeholder/test
+            content and shouldn't be taken as real news.
+        </p>
+      </div>
       <div className="mb-9">
         <h1 className="text-xl font-normal leading-relaxed max-w-xl mb-2">
           Daily AI intelligence, filtered for people who build with this —
