@@ -1,10 +1,9 @@
-async function getLatestDigest() {
+async function getDigests() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
     cache: "no-store",
   });
-  if (!res.ok) return null;
-  const digests = await res.json();
-  return digests[0] ?? null;
+  if (!res.ok) return [];
+  return res.json();
 }
 
 async function getStories() {
@@ -16,39 +15,116 @@ async function getStories() {
 }
 
 export default async function HomePage() {
-  const digest = await getLatestDigest();
+  const digests = await getDigests();
   const stories = await getStories();
 
-  return (
-    <main className="max-w-4xl mx-auto px-4 py-12">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight">Axonix</h1>
-        <p className="text-sm text-gray-400 mt-1">
-          AI intelligence, delivered daily
-        </p>
-      </header>
+  const latestDigest = digests[0] ?? null;
 
-      {digest && (
-        <section className="mb-10 border-b border-gray-800 pb-8">
-          <h2 className="text-xl font-semibold mb-2">
-            {digest.publish_date}
-          </h2>
-          <p className="text-gray-300">{digest.overall_summary}</p>
+  const todayStories = latestDigest
+    ? stories
+        .filter((s) => s.digest_id === latestDigest.id)
+        .sort((a, b) => a.id - b.id)
+    : [];
+
+  const featured = todayStories[0] ?? null;
+  const rest = todayStories.slice(1);
+
+  return (
+    <main className="max-w-6xl mx-auto px-8 py-12">
+      <div className="mb-9">
+        <h1 className="text-xl font-normal leading-relaxed max-w-xl mb-2">
+          Daily AI intelligence, filtered for people who build with this —
+          not just read about it.
+        </h1>
+        <p className="text-sm font-mono text-muted">
+          {todayStories.length} stories today
+        </p>
+      </div>
+
+      {latestDigest && (
+        <section className="bg-digest-bg border-l-2 border-accent rounded-lg px-6 py-5 mb-9">
+          <p className="text-sm font-mono font-semibold mb-2">
+            {latestDigest.publish_date}
+          </p>
+          <p className="text-base text-foreground/90 leading-relaxed">
+            {latestDigest.overall_summary}
+          </p>
         </section>
       )}
 
-      <section>
-        <h2 className="text-lg font-semibold mb-4">Latest Stories</h2>
-        <div className="space-y-6">
-          {stories.map((story) => (
-            <article key={story.id} className="border-b border-gray-800 pb-6">
-              <h3 className="text-lg font-medium">{story.headline}</h3>
-              <p className="text-sm text-gray-400 mt-1">{story.source}</p>
-              <p className="text-gray-300 mt-2">{story.summary}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      {featured && (
+        <>
+          <p className="text-xs font-mono text-accent mb-3 tracking-wide">
+            FEATURED
+          </p>
+          <article className="border border-accent bg-digest-bg rounded-lg px-8 py-8 mb-10">
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {featured.topic_tags.split(",").map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted"
+                >
+                  {tag.trim()}
+                </span>
+              ))}
+            </div>
+            <h2 className="text-2xl font-semibold mb-3 leading-snug">
+              {featured.headline}
+            </h2>
+            <p className="text-muted leading-relaxed mb-4">
+              {featured.summary}
+            </p>
+            <p className="text-xs font-mono text-faint">{featured.source}</p>
+          </article>
+        </>
+      )}
+
+      {rest.length > 0 && (
+        <>
+          <h2 className="text-sm font-semibold mb-4">Also today</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+            {rest.map((story) => (
+              <article
+                key={story.id}
+                className="bg-card-bg border border-border rounded-lg px-5 py-5"
+              >
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {story.topic_tags.split(",").map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted"
+                    >
+                      {tag.trim()}
+                    </span>
+                  ))}
+                </div>
+                <h3 className="text-sm font-semibold mb-2 leading-snug">
+                  {story.headline}
+                </h3>
+                <p className="text-xs text-muted leading-relaxed mb-3">
+                  {story.summary}
+                </p>
+                <p className="text-[11px] font-mono text-faint">
+                  {story.source}
+                </p>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+
+      <div className="flex justify-center mb-10">
+        <a
+          href="/digests"
+          className="text-sm font-mono border border-border rounded-md px-5 py-2.5 hover:bg-card-bg transition"
+        >
+          View all digests →
+        </a>
+      </div>
+
+      <div className="border border-dashed border-border rounded-md px-5 py-4 text-center text-[11px] font-mono text-faint">
+        AD SLOT
+      </div>
     </main>
   );
 }
