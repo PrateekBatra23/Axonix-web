@@ -6,14 +6,6 @@ async function getDigests() {
   return res.json();
 }
 
-async function getStories() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories`, {
-    cache: "no-store",
-  });
-  if (!res.ok) return [];
-  return res.json();
-}
-
 function formatDate(dateStr) {
   const date = new Date(dateStr);
   const day = date.toLocaleDateString("en-US", { day: "2-digit" });
@@ -30,7 +22,6 @@ export const metadata = {
 
 export default async function DigestsPage() {
   const digests = await getDigests();
-  const stories = await getStories();
 
   const sorted = [...digests].sort(
     (a, b) => new Date(b.publish_date) - new Date(a.publish_date)
@@ -48,10 +39,8 @@ export default async function DigestsPage() {
       <div>
         {sorted.map((digest) => {
           const { formatted, weekday } = formatDate(digest.publish_date);
-          const count = stories.filter((s) => s.digest_id === digest.id).length;
 
           return (
-            
             <a
               key={digest.id}
               href={`/digests/${digest.slug}`}
@@ -68,7 +57,8 @@ export default async function DigestsPage() {
                   {digest.overall_summary}
                 </p>
                 <span className="text-xs font-mono text-faint">
-                  {count} {count === 1 ? "story" : "stories"}
+                  {digest.story_count}{" "}
+                  {digest.story_count === 1 ? "story" : "stories"}
                 </span>
               </div>
               <div className="flex items-center shrink-0 text-faint">→</div>

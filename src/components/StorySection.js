@@ -34,9 +34,10 @@ export default function StorySection({ stories }) {
       {view === "grid" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
           {stories.map((story) => (
-            <article
+            <a
               key={story.id}
-              className="bg-card-bg border border-border rounded-lg px-5 py-5"
+              href={`/stories/${story.slug}`}
+              className="block bg-card-bg border border-border rounded-lg px-5 py-5 hover:border-accent/50 transition"
             >
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {story.topic_tags.split(",").map((tag) => (
@@ -57,15 +58,16 @@ export default function StorySection({ stories }) {
               <p className="text-[11px] font-mono text-faint">
                 {story.source}
               </p>
-            </article>
+            </a>
           ))}
         </div>
       ) : (
         <div className="mb-10">
           {stories.map((story, i) => (
-            <article
+            <a
               key={story.id}
-              className="flex gap-5 py-4 border-b border-border"
+              href={`/stories/${story.slug}`}
+              className="flex gap-5 py-4 border-b border-border hover:bg-card-bg transition px-1 -mx-1"
             >
               <span className="text-xs font-mono text-faint pt-0.5 min-w-[22px]">
                 {String(i + 1).padStart(2, "0")}
@@ -97,7 +99,7 @@ export default function StorySection({ stories }) {
                   </div>
                 </div>
               </div>
-            </article>
+            </a>
           ))}
         </div>
       )}

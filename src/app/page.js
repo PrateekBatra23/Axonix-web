@@ -1,4 +1,5 @@
 import StorySection from "@/components/StorySection";
+
 async function getDigests() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
     cache: "no-store",
@@ -7,38 +8,35 @@ async function getDigests() {
   return res.json();
 }
 
-async function getStories() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories`, {
-    cache: "no-store",
-  });
+async function getStoriesForDigest(digestId) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories?digest_id=${digestId}`,
+    { cache: "no-store" }
+  );
   if (!res.ok) return [];
   return res.json();
 }
 
 export default async function HomePage() {
   const digests = await getDigests();
-  const stories = await getStories();
-
   const latestDigest = digests[0] ?? null;
 
   const todayStories = latestDigest
-    ? stories
-        .filter((s) => s.digest_id === latestDigest.id)
-        .sort((a, b) => a.id - b.id)
+    ? (await getStoriesForDigest(latestDigest.id)).sort((a, b) => a.id - b.id)
     : [];
 
   const featured = todayStories[0] ?? null;
   const rest = todayStories.slice(1);
 
   return (
-    
     <main className="max-w-6xl mx-auto px-8 py-12">
       <div className="bg-digest-bg border border-accent/30 rounded-lg px-5 py-3 mb-8 text-center">
         <p className="text-xs font-mono text-muted">
           🚧 Site under construction — some data shown may be placeholder/test
-            content and shouldn't be taken as real news.
+          content and shouldn't be taken as real news.
         </p>
       </div>
+
       <div className="mb-9">
         <h1 className="text-xl font-normal leading-relaxed max-w-xl mb-2">
           Daily AI intelligence, filtered for people who build with this —
@@ -88,6 +86,7 @@ export default async function HomePage() {
       )}
 
       <StorySection stories={rest} />
+
       <div className="flex justify-center mb-10">
         <a
           href="/digests"
