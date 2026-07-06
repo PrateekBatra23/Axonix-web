@@ -41,56 +41,99 @@ export default async function DigestDetailPage({ params }) {
   const rest = digestStories.slice(1);
 
   return (
-    <main className="max-w-6xl mx-auto px-8 py-12">
-      <a href="/digests" className="text-xs font-mono text-accent mb-6 inline-block">
-        ← digests
-      </a>
-
-      <h1 className="text-sm font-mono font-semibold mb-4">
-        {digest.publish_date}
-      </h1>
-
-      <p className="text-base text-foreground/90 leading-relaxed max-w-2xl mb-10">
-        {digest.overall_summary}
-      </p>
-
-      {featured && (
-        <>
-          <p className="text-xs font-mono text-accent mb-3 tracking-wide">
-            FEATURED
-          </p>
-          <a
-          href={`/stories/${featured.slug}`}
-  className="block border border-accent bg-digest-bg rounded-lg px-8 py-8 mb-10 hover:border-accent transition"
->
-  <div className="flex flex-wrap gap-1.5 mb-3">
-    {featured.topic_tags.split(",").map((tag) => (
-      <span
-        key={tag}
-        className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted"
+    <>
+      {/* Hero band — dark, matches header, same as homepage */}
+      <div
+        className="relative overflow-hidden"
+        style={{ background: "var(--header-bg)" }}
       >
-        {tag.trim()}
-      </span>
-    ))}
-  </div>
-  <h2 className="text-2xl font-semibold mb-3 leading-snug">
-    {featured.headline}
-  </h2>
-  <p className="text-muted leading-relaxed mb-4">
-    {featured.summary}
-  </p>
-  <p className="text-xs font-mono text-faint">{featured.source}</p>
-</a>
-        </>
+        <div
+          className="absolute -top-[40%] -right-[10%] w-[70%] h-[220%] rotate-[18deg]"
+          style={{ background: "rgba(255,255,255,0.025)" }}
+        />
+        <div className="relative px-10 py-16">
+          <a
+            href="/digests"
+            className="text-xs font-mono text-accent mb-4 inline-block"
+          >
+            ← digests
+          </a>
+          <p className="text-xs font-mono text-accent tracking-wide mb-3">
+            {digest.publish_date}
+          </p>
+          <h1
+            className="text-4xl font-bold leading-tight mb-4 max-w-4xl"
+            style={{ color: "var(--header-text)" }}
+          >
+            {digest.overall_summary}
+          </h1>
+        </div>
+      </div>
+
+      {/* Featured band — same bold treatment as homepage */}
+      {featured && (
+        <div style={{ background: "var(--featured-bg)" }}>
+          <div className="max-w-7xl mx-auto px-6 py-11">
+            <a
+              href={`/stories/${featured.slug}`}
+              className={`grid gap-7 items-start hover:opacity-90 transition ${
+                featured.img_url ? "grid-cols-1 sm:grid-cols-[280px_1fr]" : "grid-cols-1"
+              }`}
+            >
+              {featured.img_url && (
+                <img
+                  src={featured.img_url}
+                  alt=""
+                  loading="lazy"
+                  className="w-full aspect-[4/3] object-cover rounded-lg"
+                  style={{ background: "var(--featured-image-bg)" }}
+                  onError={(e) => { e.target.style.display = "none"; }}
+                />
+              )}
+              <div>
+                <span
+                  className="inline-block text-[10px] font-mono font-semibold tracking-wide px-2.5 py-1 rounded mb-3"
+                  style={{
+                    background: "var(--featured-badge-bg)",
+                    color: "var(--featured-badge-text)",
+                  }}
+                >
+                  FEATURED
+                </span>
+                <h2
+                  className="text-xl font-semibold mb-2.5 leading-snug"
+                  style={{ color: "var(--featured-text)" }}
+                >
+                  {featured.headline}
+                </h2>
+                <p
+                  className="text-sm leading-relaxed mb-2.5 max-w-2xl"
+                  style={{ color: "var(--featured-muted)" }}
+                >
+                  {featured.summary}
+                </p>
+                <p
+                  className="text-xs font-mono"
+                  style={{ color: "var(--featured-faint)" }}
+                >
+                  {featured.source}
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
       )}
 
-      <StorySection stories={rest} />
+      {/* Main content — plain white */}
+      <main className="max-w-7xl mx-auto px-6 py-11">
+        <StorySection stories={rest} />
 
-      {digestStories.length === 0 && (
-        <p className="text-sm text-muted py-12 text-center">
-          No stories in this digest yet.
-        </p>
-      )}
-    </main>
+        {digestStories.length === 0 && (
+          <p className="text-sm text-muted py-12 text-center">
+            No stories in this digest yet.
+          </p>
+        )}
+      </main>
+    </>
   );
 }
