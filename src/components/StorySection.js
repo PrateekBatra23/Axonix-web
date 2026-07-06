@@ -32,37 +32,35 @@ export default function StorySection({ stories }) {
       </div>
 
       {view === "grid" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {stories.map((story) => (
             <a
               key={story.id}
               href={`/stories/${story.slug}`}
-              className="block bg-card-bg border border-border rounded-lg px-5 py-5 hover:border-accent/50 transition"
+              className="flex gap-3.5 pb-4 border-b border-border hover:opacity-80 transition"
             >
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {story.topic_tags.split(",").map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted"
-                  >
-                    {tag.trim()}
-                  </span>
-                ))}
+              {story.img_url && (
+                <img
+                src={story.img_url}
+                alt=""
+                loading="lazy"
+                className="w-[60px] h-[60px] object-cover rounded-md shrink-0 bg-card-bg"
+                onError={(e) => { e.target.style.display = "none"; }}
+              />
+              )}
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold mb-1.5 leading-snug">
+                  {story.headline}
+                </h3>
+                <p className="text-[11px] font-mono text-faint">
+                  {story.source}
+                </p>
               </div>
-              <h3 className="text-sm font-semibold mb-2 leading-snug">
-                {story.headline}
-              </h3>
-              <p className="text-xs text-muted leading-relaxed mb-3">
-                {story.summary}
-              </p>
-              <p className="text-[11px] font-mono text-faint">
-                {story.source}
-              </p>
             </a>
           ))}
         </div>
       ) : (
-        <div className="mb-10">
+        <div>
           {stories.map((story, i) => (
             <a
               key={story.id}
