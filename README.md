@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Axonix
 
-## Getting Started
+**AI intelligence, delivered daily.**
 
-First, run the development server:
+Axonix is a daily AI news platform that aggregates and summarizes the latest developments in AI — models, research, tooling, and industry moves — into a clean, digestible daily briefing. Built for engineers, architects, and AI practitioners who want signal, not noise.
+
+🔗 Live: [axonix.prateekbatra.dev](https://axonix.prateekbatra.dev) *(once DNS is configured)*
+
+---
+
+## What it does
+
+Axonix publishes a daily digest of the most important AI news, broken down into individual stories that can be browsed by date, topic, or company. Coverage spans model releases, research, tooling, and industry moves from major AI labs and companies — OpenAI, Google, Anthropic, Microsoft, NVIDIA, Meta, Mistral AI, Hugging Face, and Apple.
+
+An AI jobs board is planned as a future addition.
+
+---
+
+## How it works
+
+The project is split across three repositories:
+
+- **Pipeline** — gathers the day's AI news and produces summaries using the Claude API
+- **Backend** — a FastAPI service that stores and serves digests and stories
+- **Frontend** (this repo) — a Next.js site that renders the digests, stories, topics, and company pages
+
+The frontend is server-rendered throughout, fetching data from the backend API at request time.
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js (App Router), JavaScript |
+| Styling | Tailwind CSS |
+| Backend | FastAPI (Python) |
+| Database | PostgreSQL (Supabase) |
+| Backend hosting | Railway |
+| Frontend hosting | Vercel |
+| Summarization | Claude API |
+
+---
+
+## Getting started
+
+### Prerequisites
+- Node.js 18+
+- The Axonix backend running locally or deployed, with its API URL available
+
+### Setup
+
+```bash
+git clone https://github.com/PrateekBatra23/Axonix-web.git
+cd Axonix-web
+npm install
+```
+
+Create `.env.local` in the project root:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+Point this at your local backend during development, and at your deployed backend URL in production.
+
+Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+- **Frontend**: pushes to `main` auto-deploy via Vercel
+- **Backend**: deployed separately on Railway
+- Environment variables are set per-environment in each platform's dashboard, not committed to the repo
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built by [Prateek Batra](https://prateekbatra.dev).
