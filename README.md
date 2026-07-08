@@ -4,7 +4,7 @@
 
 Axonix is a daily AI news platform that aggregates and summarizes the latest developments in AI — models, research, tooling, and industry moves — into a clean, digestible daily briefing. Built for engineers, architects, and AI practitioners who want signal, not noise.
 
-🔗 Live: [axonix.prateekbatra.dev](https://axonix.prateekbatra.dev) *(once DNS is configured)*
+🔗 Live: [axonix.prateekbatra.dev](https://axonix.prateekbatra.dev)
 
 ---
 
