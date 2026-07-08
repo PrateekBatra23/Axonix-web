@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getStoryImage, handleImageError } from "@/lib/imageFallback";
+import StoryVisual from "@/components/StoryVisual";
 
 export default function StorySection({ stories }) {
   const [view, setView] = useState("grid");
@@ -40,13 +40,11 @@ export default function StorySection({ stories }) {
               href={`/stories/${story.slug}`}
               className="flex gap-3.5 pb-4 border-b border-border hover:opacity-80 transition"
             >
-              <img
-                src={getStoryImage(story)}
-                alt=""
-                loading="lazy"
-                className="w-[60px] h-[60px] object-cover rounded-md shrink-0 bg-card-bg"
-                onError={(e) => handleImageError(e, story)}
-              />
+              <StoryVisual
+                  story={story}
+                  className="w-[60px] h-[60px] object-cover rounded-md shrink-0"
+                  letterClassName="text-xl"
+                />
               <div className="min-w-0">
                 <h3 className="text-sm font-semibold mb-1.5 leading-snug">
                   {story.headline}

@@ -1,7 +1,6 @@
 "use client";
 
-import { getStoryImage, handleImageError } from "@/lib/imageFallback";
-
+import StoryVisual from "@/components/StoryVisual";
 export default function FeaturedStory({ story }) {
   if (!story) return null;
 
@@ -12,13 +11,10 @@ export default function FeaturedStory({ story }) {
           href={`/stories/${story.slug}`}
           className="grid grid-cols-1 sm:grid-cols-[280px_1fr] gap-7 items-start hover:opacity-90 transition"
         >
-          <img
-            src={getStoryImage(story)}
-            alt=""
-            loading="lazy"
+          <StoryVisual
+            story={story}
             className="w-full aspect-[4/3] object-cover rounded-lg"
-            style={{ background: "var(--featured-image-bg)" }}
-            onError={(e) => handleImageError(e, story)}
+            letterClassName="text-6xl"
           />
           <div>
             <span
