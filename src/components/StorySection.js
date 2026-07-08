@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getStoryImage, handleImageError } from "@/lib/imageFallback";
 
 export default function StorySection({ stories }) {
   const [view, setView] = useState("grid");
@@ -39,19 +40,20 @@ export default function StorySection({ stories }) {
               href={`/stories/${story.slug}`}
               className="flex gap-3.5 pb-4 border-b border-border hover:opacity-80 transition"
             >
-              {story.img_url && (
-                <img
-                src={story.img_url}
+              <img
+                src={getStoryImage(story)}
                 alt=""
                 loading="lazy"
                 className="w-[60px] h-[60px] object-cover rounded-md shrink-0 bg-card-bg"
-                onError={(e) => { e.target.style.display = "none"; }}
+                onError={(e) => handleImageError(e, story)}
               />
-              )}
               <div className="min-w-0">
                 <h3 className="text-sm font-semibold mb-1.5 leading-snug">
                   {story.headline}
                 </h3>
+                <p className="text-xs text-muted leading-relaxed mb-1.5 line-clamp-2">
+                  {story.summary}
+                </p>
                 <p className="text-[11px] font-mono text-faint">
                   {story.source}
                 </p>
@@ -77,7 +79,7 @@ export default function StorySection({ stories }) {
                     {story.published_date}
                   </span>
                 </div>
-                <p className="text-xs text-muted leading-relaxed mb-2 max-w-2xl">
+                <p className="text-xs text-muted leading-relaxed mb-2 max-w-2xl line-clamp-2">
                   {story.summary}
                 </p>
                 <div className="flex items-center gap-2.5">

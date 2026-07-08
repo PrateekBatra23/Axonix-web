@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import StorySection from "@/components/StorySection";
+import FeaturedStory from "@/components/FeaturedStory";
 
 async function getDigest(slug) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests/${slug}`, {
@@ -52,77 +53,29 @@ export default async function DigestDetailPage({ params }) {
           style={{ background: "rgba(255,255,255,0.025)" }}
         />
         <div className="relative px-10 py-16">
-          <a
-            href="/digests"
-            className="text-xs font-mono text-accent mb-4 inline-block"
-          >
+          <a href="/digests" className="text-xs font-mono text-accent mb-4 inline-block">
             ← digests
           </a>
           <p className="text-xs font-mono text-accent tracking-wide mb-3">
             {digest.publish_date}
           </p>
           <h1
-            className="text-4xl font-bold leading-tight mb-4 max-w-4xl"
+            className="text-4xl font-bold leading-tight mb-4"
             style={{ color: "var(--header-text)" }}
           >
-            {digest.overall_summary}
+            Daily briefing
           </h1>
+          <p
+            className="text-base leading-relaxed max-w-2xl"
+            style={{ color: "var(--header-muted)" }}
+          >
+            {digest.overall_summary}
+          </p>
         </div>
       </div>
 
       {/* Featured band — same bold treatment as homepage */}
-      {featured && (
-        <div style={{ background: "var(--featured-bg)" }}>
-          <div className="max-w-7xl mx-auto px-6 py-11">
-            <a
-              href={`/stories/${featured.slug}`}
-              className={`grid gap-7 items-start hover:opacity-90 transition ${
-                featured.img_url ? "grid-cols-1 sm:grid-cols-[280px_1fr]" : "grid-cols-1"
-              }`}
-            >
-              {featured.img_url && (
-                <img
-                  src={featured.img_url}
-                  alt=""
-                  loading="lazy"
-                  className="w-full aspect-[4/3] object-cover rounded-lg"
-                  style={{ background: "var(--featured-image-bg)" }}
-                  onError={(e) => { e.target.style.display = "none"; }}
-                />
-              )}
-              <div>
-                <span
-                  className="inline-block text-[10px] font-mono font-semibold tracking-wide px-2.5 py-1 rounded mb-3"
-                  style={{
-                    background: "var(--featured-badge-bg)",
-                    color: "var(--featured-badge-text)",
-                  }}
-                >
-                  FEATURED
-                </span>
-                <h2
-                  className="text-xl font-semibold mb-2.5 leading-snug"
-                  style={{ color: "var(--featured-text)" }}
-                >
-                  {featured.headline}
-                </h2>
-                <p
-                  className="text-sm leading-relaxed mb-2.5 max-w-2xl"
-                  style={{ color: "var(--featured-muted)" }}
-                >
-                  {featured.summary}
-                </p>
-                <p
-                  className="text-xs font-mono"
-                  style={{ color: "var(--featured-faint)" }}
-                >
-                  {featured.source}
-                </p>
-              </div>
-            </a>
-          </div>
-        </div>
-      )}
+      <FeaturedStory story={featured} />
 
       {/* Main content — plain white */}
       <main className="max-w-7xl mx-auto px-6 py-11">

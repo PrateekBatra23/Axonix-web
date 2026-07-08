@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-
+import StoryImage from "@/components/StoryImage";
 async function getStory(slug) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories/${slug}`, {
     cache: "no-store",
@@ -75,7 +75,7 @@ export default async function StoryDetailPage({ params }) {
       <h1 className="text-2xl font-semibold mb-5 leading-snug">
         {story.headline}
       </h1>
-
+      <StoryImage story={story} />
       <div className="flex items-center gap-3.5 mb-8 pb-6 border-b border-border">
         <span className="text-sm font-mono font-semibold">{story.source}</span>
         <span className="text-faint">·</span>

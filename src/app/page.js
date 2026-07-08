@@ -1,6 +1,5 @@
 import StorySection from "@/components/StorySection";
-
-async function getDigests() {
+import FeaturedStory from "@/components/FeaturedStory";async function getDigests() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
     cache: "no-store",
   });
@@ -78,58 +77,7 @@ export default async function HomePage() {
       </div>
 
       {/* Featured band — bold color block, tokens ready for per-company override later */}
-      {featured && (
-        <div style={{ background: "var(--featured-bg)" }}>
-          <div className="max-w-7xl mx-auto px-6 py-11">
-            <a
-              href={`/stories/${featured.slug}`}
-              className={`grid gap-7 items-start hover:opacity-90 transition ${
-                featured.img_url ? "grid-cols-1 sm:grid-cols-[280px_1fr]" : "grid-cols-1"
-              }`}
-            >
-              {featured.img_url && (
-                <img
-                  src={featured.img_url}
-                  alt=""
-                  loading="lazy"
-                  className="w-full aspect-[4/3] object-cover rounded-lg"
-                  style={{ background: "var(--featured-image-bg)" }}
-                  onError={(e) => { e.target.style.display = "none"; }}
-                />
-              )}
-              <div>
-                <span
-                  className="inline-block text-[10px] font-mono font-semibold tracking-wide px-2.5 py-1 rounded mb-3"
-                  style={{
-                    background: "var(--featured-badge-bg)",
-                    color: "var(--featured-badge-text)",
-                  }}
-                >
-                  FEATURED
-                </span>
-                <h2
-                  className="text-xl font-semibold mb-2.5 leading-snug"
-                  style={{ color: "var(--featured-text)" }}
-                >
-                  {featured.headline}
-                </h2>
-                <p
-                  className="text-sm leading-relaxed mb-2.5 max-w-2xl"
-                  style={{ color: "var(--featured-muted)" }}
-                >
-                  {featured.summary}
-                </p>
-                <p
-                  className="text-xs font-mono"
-                  style={{ color: "var(--featured-faint)" }}
-                >
-                  {featured.source}
-                </p>
-              </div>
-            </a>
-          </div>
-        </div>
-      )}
+      <FeaturedStory story={featured} />
 
       {/* Main content — plain white, no tint */}
       <main className="max-w-7xl mx-auto px-6 py-11 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-11">
