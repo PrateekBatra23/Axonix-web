@@ -4,6 +4,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://prateekbatra.dev/sitemap.xml",
+    sitemap: "https://avonzi.prateekbatra.dev/sitemap.xml",
   };
 }

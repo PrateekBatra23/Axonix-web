@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    default: "TBDName — AI intelligence, delivered daily",
-    template: "%s | TBDName",
+    default: "Avonzi — AI intelligence, delivered daily",
+    template: "%s | Avonzi",
   },
   description: "AI intelligence, delivered daily. Daily AI news digests for engineers, architects, and AI practitioners.",
   openGraph: {
-    title: "TBDName — AI intelligence, delivered daily",
+    title: "Axonix — AI intelligence, delivered daily",
     description: "AI intelligence, delivered daily. Daily AI news digests for engineers, architects, and AI practitioners.",
     type: "website",
   },

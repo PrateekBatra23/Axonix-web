@@ -1,4 +1,4 @@
-const BASE_URL = "https://prateekbatra.dev";
+const BASE_URL = "https://avonzi.prateekbatra.dev";
 async function getDigests() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
     cache: "no-store",

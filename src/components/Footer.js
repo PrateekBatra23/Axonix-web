@@ -20,9 +20,9 @@ export default function Footer() {
           , used when a story has no original source image.
         </p>
         <div className="flex items-center justify-between text-xs font-mono text-faint">
-          <span>© {new Date().getFullYear()} TBDName</span>
+          <span>© {new Date().getFullYear()} Avonzi</span>
           <a
-            href="https://github.prateekbatra.dev"
+            href="https://prateekbatra.dev"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition"
