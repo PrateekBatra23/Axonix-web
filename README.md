@@ -1,16 +1,16 @@
-# Axonix
+# Avonzi
 
 **AI intelligence, delivered daily.**
 
-Axonix is a daily AI news platform that aggregates and summarizes the latest developments in AI — models, research, tooling, and industry moves — into a clean, digestible daily briefing. Built for engineers, architects, and AI practitioners who want signal, not noise.
+Avonzi is a daily AI news platform that aggregates and summarizes the latest developments in AI — models, research, tooling, and industry moves — into a clean, digestible daily briefing. Built for engineers, architects, and AI practitioners who want signal, not noise.
 
-🔗 Live: [axonix.prateekbatra.dev](https://axonix.prateekbatra.dev)
+🔗 Live: [avonzi.prateekbatra.dev](https://avonzi.prateekbatra.dev)
 
 ---
 
 ## What it does
 
-Axonix publishes a daily digest of the most important AI news, broken down into individual stories that can be browsed by date, topic, or company. Coverage spans model releases, research, tooling, and industry moves from major AI labs and companies — OpenAI, Google, Anthropic, Microsoft, NVIDIA, Meta, Mistral AI, Hugging Face, and Apple.
+avonzi publishes a daily digest of the most important AI news, broken down into individual stories that can be browsed by date, topic, or company. Coverage spans model releases, research, tooling, and industry moves from major AI labs and companies — OpenAI, Google, Anthropic, Microsoft, NVIDIA, Meta, Mistral AI, Hugging Face, and Apple.
 
 An AI jobs board is planned as a future addition.
 
@@ -46,13 +46,13 @@ The frontend is server-rendered throughout, fetching data from the backend API a
 
 ### Prerequisites
 - Node.js 18+
-- The Axonix backend running locally or deployed, with its API URL available
+- The avonzi backend running locally or deployed, with its API URL available
 
 ### Setup
 
 ```bash
-git clone https://github.com/PrateekBatra23/Axonix-web.git
-cd Axonix-web
+git clone https://github.com/PrateekBatra23/avonzi-web.git
+cd avonzi-web
 npm install
 ```
 
