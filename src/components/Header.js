@@ -35,7 +35,7 @@ export default function Header() {
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="font-bold text-lg tracking-tight" style={{ color: "var(--header-text)" }}>
-          AXONIX
+          TBDName
         </Link>
 
         <div className="flex items-center gap-7 text-sm font-mono" style={{ color: "var(--header-muted)" }}>
@@ -105,7 +105,7 @@ export default function Header() {
             </span>
           </Link>
           <a
-            href="https://prateekbatra.dev"
+            href="https://github.prateekbatra.dev"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white transition"
