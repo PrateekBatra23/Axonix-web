@@ -1,21 +1,48 @@
+import JobsBoard from "@/components/JobsBoard";
+
+async function getInitialJobs() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs?limit=30`, {
+    cache: "no-store",
+  });
+  if (!res.ok) return { jobs: [], total: 0, has_more: false, last_scrapes: [] };
+  return res.json();
+}
+
+async function getJobCompanies() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs/companies`, {
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
+
 export const metadata = {
   title: "Jobs",
-  description: "The Axonix AI jobs board is coming soon.",
+  description: "Open roles across leading companies.",
 };
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const [initial, companies] = await Promise.all([
+    getInitialJobs(),
+    getJobCompanies(),
+  ]);
+
   return (
-    <main className="max-w-2xl mx-auto px-8 py-24 text-center">
-      <p className="text-xs font-mono text-accent tracking-wide mb-4">
-        COMING SOON
-      </p>
-      <h1 className="text-2xl font-semibold mb-4">AI Jobs Board</h1>
-      <p className="text-muted leading-relaxed">
-        A curated jobs board for AI engineers, researchers, and
-        architects - pulling roles together from career pages and job
-        portals across the industry, so you get one place to look instead
-        of checking a dozen different company sites.
-      </p>
+    <main className="max-w-3xl mx-auto px-8 py-12">
+      <div className="mb-9">
+        <h1 className="text-2xl font-semibold mb-2">Jobs</h1>
+        <p className="text-sm text-muted">
+          {initial.total} open {initial.total === 1 ? "role" : "roles"}
+        </p>
+      </div>
+
+      <JobsBoard
+        initialJobs={initial.jobs}
+        initialTotal={initial.total}
+        initialHasMore={initial.has_more}
+        lastScrapes={initial.last_scrapes}
+        companies={companies}
+      />
     </main>
   );
 }
