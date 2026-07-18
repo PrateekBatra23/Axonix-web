@@ -1,10 +1,12 @@
 import StorySection from "@/components/StorySection";
-import FeaturedStory from "@/components/FeaturedStory";async function getDigests() {
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/digests`, {
+import FeaturedStory from "@/components/FeaturedStory";
+async function getDigests() {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/digests?limit=3`, {
     cache: "no-store",
   });
   if (!res.ok) return [];
-  return res.json();
+  const data = await res.json();
+  return data.digests;
 }
 
 async function getStoriesForDigest(digestId) {
@@ -117,14 +119,7 @@ export default async function HomePage() {
             </div>
           )}
 
-          <div className="flex justify-center mt-9">
-            <a
-              href="/digests"
-              className="text-sm font-mono border border-border rounded-md px-5 py-2.5 hover:bg-card-bg transition"
-            >
-              View all digests →
-            </a>
-          </div>
+          
         </div>
 
         <aside>
