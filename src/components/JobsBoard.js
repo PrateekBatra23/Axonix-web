@@ -5,9 +5,9 @@ import FlagButton from "@/components/FlagButton";
 
 const ROLE_CATEGORIES = [
   { value: "aiml", label: "AI/ML" },
-  { value: "sde", label: "Software Engineering" },
   { value: "data", label: "Data" },
   { value: "research", label: "Research" },
+  { value: "sde", label: "Software Engineering" },
 ];
 
 const EXPERIENCE_LEVELS = [
@@ -15,13 +15,6 @@ const EXPERIENCE_LEVELS = [
   { value: "fresher", label: "Fresher" },
   { value: "mid", label: "Mid-Level" },
   { value: "senior", label: "Senior" },
-];
-
-const EMPLOYMENT_TYPES = [
-  { value: "full-time", label: "Full-time" },
-  { value: "part-time", label: "Part-time" },
-  { value: "contract", label: "Contract" },
-  { value: "internship", label: "Internship" },
 ];
 
 function startOfDay(date) {
@@ -51,6 +44,7 @@ function formatTimeDisplay(job) {
   if (dayDiff <= 0) return `${label} ${hours}h ago`;
   return `${label} ${dayDiff}d ago`;
 }
+
 function isNewJob(job, lastScrapes) {
   if (!lastScrapes || lastScrapes.length === 0) return false;
   return lastScrapes.some((run) => run.run_id === job.pipeline_run_id);
@@ -61,7 +55,6 @@ function buildParams(filters, offset) {
   if (filters.company) params.set("company", filters.company);
   if (filters.role_category) params.set("role_category", filters.role_category);
   if (filters.experience_level) params.set("experience_level", filters.experience_level);
-  if (filters.employment_type) params.set("employment_type", filters.employment_type);
   if (filters.remote) params.set("remote", filters.remote);
   params.set("limit", "30");
   params.set("offset", String(offset));
@@ -76,6 +69,7 @@ export default function JobsBoard({
   companies,
 }) {
   const [jobs, setJobs] = useState(initialJobs);
+  const [total, setTotal] = useState(initialTotal);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -84,9 +78,12 @@ export default function JobsBoard({
     company: "",
     role_category: "",
     experience_level: "",
-    employment_type: "",
     remote: "",
   });
+
+  const sortedCompanies = [...companies].sort((a, b) =>
+    a.company.localeCompare(b.company)
+  );
 
   async function applyFilters(newFilters) {
     setLoading(true);
@@ -94,10 +91,11 @@ export default function JobsBoard({
     setFilters(newFilters);
     try {
       const params = buildParams(newFilters, 0);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs?${params}`);
+      const res = await fetch(`/api/jobs?${params}`);
       if (!res.ok) throw new Error("bad response");
       const data = await res.json();
       setJobs(data.jobs);
+      setTotal(data.total);
       setHasMore(data.has_more);
     } catch {
       setError(true);
@@ -111,7 +109,7 @@ export default function JobsBoard({
     setError(false);
     try {
       const params = buildParams(filters, jobs.length);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs?${params}`);
+      const res = await fetch(`/api/jobs?${params}`);
       if (!res.ok) throw new Error("bad response");
       const data = await res.json();
       setJobs((prev) => [...prev, ...data.jobs]);
@@ -129,14 +127,14 @@ export default function JobsBoard({
 
   return (
     <div>
-      <div className="flex flex-wrap gap-3 mb-8">
+      <div className="flex flex-wrap gap-3 mb-3">
         <select
           value={filters.company}
           onChange={(e) => handleFilterChange("company", e.target.value)}
           className="text-xs font-mono border border-border rounded-md px-3 py-2 bg-background"
         >
           <option value="">All companies</option>
-          {companies.map((c) => (
+          {sortedCompanies.map((c) => (
             <option key={c.company_slug} value={c.company_slug}>
               {c.company} ({c.job_count})
             </option>
@@ -166,25 +164,19 @@ export default function JobsBoard({
         </select>
 
         <select
-          value={filters.employment_type}
-          onChange={(e) => handleFilterChange("employment_type", e.target.value)}
+          value={filters.remote}
+          onChange={(e) => handleFilterChange("remote", e.target.value)}
           className="text-xs font-mono border border-border rounded-md px-3 py-2 bg-background"
         >
-          <option value="">All types</option>
-          {EMPLOYMENT_TYPES.map((t) => (
-            <option key={t.value} value={t.value}>{t.label}</option>
-          ))}
+          <option value="">All jobs</option>
+          <option value="true">Remote only</option>
+          <option value="false">Not remote</option>
         </select>
-
-        <button
-          onClick={() => handleFilterChange("remote", filters.remote === "true" ? "" : "true")}
-          className={`text-xs font-mono border border-border rounded-md px-3 py-2 ${
-            filters.remote === "true" ? "bg-card-bg" : "bg-background"
-          }`}
-        >
-          Remote only
-        </button>
       </div>
+
+      <p className="text-xs font-mono text-faint mb-6">
+        {total} {total === 1 ? "job" : "jobs"} match{filters.company || filters.role_category || filters.experience_level || filters.remote ? "ing" : ""} this selection
+      </p>
 
       {error && (
         <p className="text-sm text-muted py-4 text-center">
@@ -225,16 +217,11 @@ export default function JobsBoard({
               <p className="text-xs font-mono text-faint mb-2">
                 {job.company} · {job.location}{job.remote ? " · Remote" : ""}
               </p>
-              <div className="flex flex-wrap gap-1.5">
+              {job.experience_level && (
                 <span className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted">
-                  {job.employment_type}
+                  {job.experience_level}
                 </span>
-                {job.experience_level && (
-                  <span className="text-[10px] font-mono border border-border rounded px-2 py-0.5 text-muted">
-                    {job.experience_level}
-                  </span>
-                )}
-              </div>
+              )}
             </a>
 
             <div className="flex items-center gap-2 shrink-0 pt-1">

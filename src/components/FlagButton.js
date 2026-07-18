@@ -18,7 +18,7 @@ export default function FlagButton({ jobId }) {
     setFlagged(true);
     setShowReasons(true);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs/${jobId}/flag`, {
+      await fetch(`/api/jobs/${jobId}/flag`, {
         method: "POST",
       });
     } catch {
@@ -31,7 +31,7 @@ export default function FlagButton({ jobId }) {
     setConfirmed(true);
     setTimeout(() => setConfirmed(false), 2000);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs/${jobId}/flag-reason`, {
+      await fetch(`/api/jobs/${jobId}/flag-reason`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reason }),

@@ -1,7 +1,7 @@
 import JobsBoard from "@/components/JobsBoard";
 
 async function getInitialJobs() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs?limit=30`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/jobs?limit=30`, {
     cache: "no-store",
   });
   if (!res.ok) return { jobs: [], total: 0, has_more: false, last_scrapes: [] };
@@ -9,7 +9,7 @@ async function getInitialJobs() {
 }
 
 async function getJobCompanies() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/jobs/companies`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/jobs/companies`, {
     cache: "no-store",
   });
   if (!res.ok) return [];

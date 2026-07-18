@@ -2,7 +2,7 @@ import StorySection from "@/components/StorySection";
 
 async function getStoriesByTag(tag) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories?tag=${tag}`,
+    `${process.env.BACKEND_API_URL}/api/v1/stories?tag=${tag}`,
     { cache: "no-store" }
   );
   if (!res.ok) return [];

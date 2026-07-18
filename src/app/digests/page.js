@@ -1,5 +1,5 @@
 async function getDigests() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/digests`, {
     cache: "no-store",
   });
   if (!res.ok) return [];

@@ -14,7 +14,7 @@ const COMPANY_NAMES = {
 
 async function getStoriesByCompany(slug) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories?company=${slug}`,
+    `${process.env.BACKEND_API_URL}/api/v1/stories?company=${slug}`,
     { cache: "no-store" }
   );
   if (!res.ok) return [];

@@ -1,6 +1,6 @@
 import StorySection from "@/components/StorySection";
 import FeaturedStory from "@/components/FeaturedStory";async function getDigests() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/digests`, {
     cache: "no-store",
   });
   if (!res.ok) return [];
@@ -9,7 +9,7 @@ import FeaturedStory from "@/components/FeaturedStory";async function getDigests
 
 async function getStoriesForDigest(digestId) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories?digest_id=${digestId}`,
+    `${process.env.BACKEND_API_URL}/api/v1/stories?digest_id=${digestId}`,
     { cache: "no-store" }
   );
   if (!res.ok) return [];

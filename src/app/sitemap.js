@@ -1,6 +1,6 @@
 const BASE_URL = "https://avonzi.prateekbatra.dev";
 async function getDigests() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/digests`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/digests`, {
     cache: "no-store",
   });
   if (!res.ok) return [];
@@ -8,7 +8,7 @@ async function getDigests() {
 }
 
 async function getStories() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/stories`, {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/stories`, {
     cache: "no-store",
   });
   if (!res.ok) return [];
