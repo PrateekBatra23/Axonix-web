@@ -2,6 +2,7 @@
 
 # dependencies
 web/node_modules
+admin/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -12,13 +13,17 @@ web/node_modules
 
 # testing
 web/coverage
+admin/coverage
 
 # next.js
 web/.next/
 web/out/
+admin/.next/
+admin/out/
 
 # production
 web/build
+admin/build
 
 # misc
 .DS_Store
@@ -40,4 +45,6 @@ admin/.env*
 # typescript
 *.tsbuildinfo
 web/next-env.d.ts
+admin/next-env.d.ts
+
 public
