@@ -1,16 +1,14 @@
+import { notFound } from "next/navigation";
 import StorySection from "@/components/StorySection";
 
-const COMPANY_NAMES = {
-  openai: "OpenAI",
-  google: "Google",
-  anthropic: "Anthropic",
-  microsoft: "Microsoft",
-  nvidia: "NVIDIA",
-  meta: "Meta",
-  mistral: "Mistral AI",
-  huggingface: "Hugging Face",
-  apple: "Apple",
-};
+async function getCompany(slug) {
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/v1/companies/${slug}`,
+    { cache: "no-store" }
+  );
+  if (!res.ok) return null;
+  return res.json();
+}
 
 async function getStoriesByCompany(slug) {
   const res = await fetch(
@@ -23,16 +21,20 @@ async function getStoriesByCompany(slug) {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const name = COMPANY_NAMES[slug] ?? slug;
+  const company = await getCompany(slug);
+  if (!company) return { title: "Company not found" };
   return {
-    title: name,
-    description: `Recent AI developments from ${name}.`,
+    title: company.name,
+    description: `Recent AI developments from ${company.name}.`,
   };
 }
 
 export default async function CompanyPage({ params }) {
   const { slug } = await params;
-  const name = COMPANY_NAMES[slug] ?? slug;
+  const company = await getCompany(slug);
+
+  if (!company) notFound();
+
   const stories = (await getStoriesByCompany(slug)).sort((a, b) => b.id - a.id);
 
   return (
@@ -45,19 +47,26 @@ export default async function CompanyPage({ params }) {
         <span className="text-muted">{slug}</span>
       </div>
 
-      <div className="mb-9">
-        <h1 className="text-2xl font-semibold mb-2">{name}</h1>
-        <p className="text-sm text-muted">
-          {stories.length} recent{" "}
-          {stories.length === 1 ? "story" : "stories"}
-        </p>
+      <div className="mb-9 flex items-center gap-4">
+        <span
+          className="w-10 h-10 flex items-center justify-center text-base font-mono font-bold rounded-sm shrink-0"
+          style={{ background: company.theme_bg, color: company.theme_text }}
+        >
+          {company.name[0]}
+        </span>
+        <div>
+          <h1 className="text-2xl font-semibold mb-1">{company.name}</h1>
+          <p className="text-sm text-muted">
+            {stories.length} recent {stories.length === 1 ? "story" : "stories"}
+          </p>
+        </div>
       </div>
 
       <StorySection stories={stories} />
 
       {stories.length === 0 && (
         <p className="text-sm text-muted py-12 text-center">
-          No stories from {name} yet.
+          No stories from {company.name} yet.
         </p>
       )}
     </main>
