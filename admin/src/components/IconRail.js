@@ -19,7 +19,7 @@ export const NAV_GROUPS = [
       </svg>
     ),
     items: [
-      { href: "/scrape-runs", label: "Scrape Runs" },
+      { href: "/pipeline-runs", label: "Scrape Runs" },
       { href: "/content-stats", label: "Content Stats" },
       { href: "/run-pipeline", label: "Run Pipeline" },
     ],

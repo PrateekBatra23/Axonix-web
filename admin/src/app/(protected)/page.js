@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const STATUS_LINKS = {
-  scraper: "/scrape-runs",
+  scraper: "/pipeline-runs",
   flags: "/flags",
   jobs_content: "/content-stats",
   news_digest: "/content-stats",
