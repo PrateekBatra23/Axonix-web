@@ -1,75 +1,39 @@
-"use client";
+const FALLBACK_THEMES = [
+  { banner: "#1c3a3a", text: "#d4e8e4", box: "#2d5654" },
+  { banner: "#3a2f1c", text: "#e8dcc4", box: "#5a4a2d" },
+  { banner: "#2a1c3a", text: "#ddd0e8", box: "#4a3457" },
+  { banner: "#1c2a3a", text: "#d0dde8", box: "#345477" },
+  { banner: "#3a1c24", text: "#e8d0d4", box: "#5a2d38" },
+  { banner: "#243a1c", text: "#dae8d0", box: "#3d5a2d" },
+];
 
-import { resolveStoryVisual, handlePhotoError } from "@/lib/imageFallback";
+function pickTheme(id) {
+  return FALLBACK_THEMES[id % FALLBACK_THEMES.length];
+}
 
-const COMPANY_COLORS = {
-  openai: { bg: "#0d3d33", text: "#7ec4b0" },
-  google: { bg: "#1a2e42", text: "#7ba3c9" },
-  anthropic: { bg: "#3d2210", text: "#d99a5f" },
-  microsoft: { bg: "#1a1f42", text: "#8a97d9" },
-  nvidia: { bg: "#0c2a1a", text: "#6fbf7a" },
-  meta: { bg: "#1a2340", text: "#8fa3e0" },
-  mistral: { bg: "#3d2410", text: "#e0965f" },
-  huggingface: { bg: "#3d3510", text: "#e0c95f" },
-  apple: { bg: "#1f1f1f", text: "#b8b8b8" },
-};
-
-export default function StoryVisual({
-  story,
-  className,
-  letterClassName = "text-lg",
-  showCredit = false,
-}) {
-  const visual = resolveStoryVisual(story);
-
-  if (visual.type === "photo") {
-    const img = (
+export default function StoryVisual({ story, className, letterClassName = "text-lg" }) {
+  if (story.image_url) {
+    return (
       <img
-        src={visual.src}
+        src={story.image_url}
         alt=""
         loading="lazy"
         className={className}
-        onError={(e) => handlePhotoError(e, story)}
+        onError={(e) => { e.target.style.display = "none"; }}
       />
     );
-
-    if (showCredit && visual.credit) {
-      return (
-        <div>
-          {img}
-          <p className="text-[10px] font-mono text-faint mt-1.5">
-            Photo: {visual.credit}
-          </p>
-        </div>
-      );
-    }
-
-    return img;
   }
 
-  if (visual.type === "monogram") {
-    if (visual.variant === "company") {
-      const colors = COMPANY_COLORS[story.company_slug] ?? {
-        bg: "var(--card-bg)",
-        text: "var(--accent)",
-      };
-      return (
-        <div className={`${className} flex items-center justify-center`} style={{ background: colors.bg }}>
-          <span className={`font-mono font-bold ${letterClassName}`} style={{ color: colors.text }}>
-            {visual.letter}
-          </span>
-        </div>
-      );
-    }
+  const fallback = pickTheme(story.id);
+  const bg = fallback.box;
+  const text = story.theme_text || fallback.text;
+  const letter = (story.company || story.source || "?")[0].toUpperCase();
 
-    return (
-      <div className={`${className} flex items-center justify-center bg-card-bg border border-border`}>
-        <span className={`font-mono font-semibold text-muted ${letterClassName}`}>
-          {visual.letter}
-        </span>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div className={`${className} flex items-center justify-center`} style={{ background: bg }}>
+      <span className={`font-mono font-bold ${letterClassName}`} style={{ color: text }}>
+        {letter}
+      </span>
+    </div>
+  );
 }
