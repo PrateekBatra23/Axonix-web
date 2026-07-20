@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import IconRail, { NAV_GROUPS, USERS_GROUP } from "@/components/IconRail";
 import Sidebar from "@/components/Sidebar";
 import AdminHeader from "@/components/AdminHeader";
+import { UserProvider } from "@/context/UserContext";
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function ProtectedLayout({ children }) {
   const selectedGroup = groups.find((g) => g.key === selectedKey) ?? groups[0];
 
  return (
+  <UserProvider user={user}>
   <div className="flex min-h-screen">
     <IconRail
       groups={groups}
@@ -66,5 +68,6 @@ export default function ProtectedLayout({ children }) {
       </div>
     </div>
   </div>
+  </UserProvider>
 );
 }
