@@ -3,17 +3,10 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 
-export default function Header() {
+export default function Header({ companies }) {
   const [showCompanies, setShowCompanies] = useState(false);
-  const [companies, setCompanies] = useState([]);
   const closeTimer = useRef(null);
 
-  useEffect(() => {
-    fetch("/api/companies?exclusive=true")
-      .then((res) => res.json())
-      .then(setCompanies)
-      .catch(() => setCompanies([]));
-  }, []);
 
   function openMenu() {
     if (closeTimer.current) clearTimeout(closeTimer.current);

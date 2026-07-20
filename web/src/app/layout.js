@@ -12,7 +12,13 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
+async function getExclusiveCompanies() {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/companies?exclusive=true`, {
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
 export const metadata = {
   title: {
     default: "Avonzi — AI intelligence, delivered daily",
@@ -26,14 +32,13 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const companies = await getExclusiveCompanies();
+
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <Header />
+        <Header companies={companies} />
         {children}
         <Footer />
       </body>
